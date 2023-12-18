@@ -16,7 +16,7 @@ services:
   app:
     image: markoshust/magento-nginx:1.18-8
     ports:
-      - "81:8100"
+      - "81:80"
       - "443:8443"
     volumes: &appvolumes
       - ~/.composer:/var/www/.composer:cached
@@ -44,7 +44,7 @@ services:
       --optimizer_use_condition_selectivity=1
       --optimizer_switch="rowid_filter=off"
     ports:
-      - "3307:3307"
+      - "3307:3306"
     env_file: env/db.env
     volumes:
       - dbdata:/var/lib/mysql
@@ -52,44 +52,44 @@ services:
   redis:
     image: redis:7.0-alpine
     ports:
-      - "7379:6379"
+      - "6380:6379"
 
-  # opensearch:
-  #   image: markoshust/magento-opensearch:2.5-0
-  #   ports:
-  #     - "9201:9201"
-  #     - "9301:9301"
-  #   env_file: env/opensearch.env
-  #   environment:
-  #     - "discovery.type=single-node"
-  #     ## Avoid test failures due to small disks
-  #     ## More info at https://github.com/markshust/docker-magento/issues/488
-  #     - "cluster.routing.allocation.disk.threshold_enabled=false"
-  #     - "index.blocks.read_only_allow_delete"
+  opensearch:
+    image: markoshust/magento-opensearch:2.5-0
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    env_file: env/opensearch.env
+    environment:
+      - "discovery.type=single-node"
+      ## Avoid test failures due to small disks
+      ## More info at https://github.com/markshust/docker-magento/issues/488
+      - "cluster.routing.allocation.disk.threshold_enabled=false"
+      - "index.blocks.read_only_allow_delete"
 
   ## If you wish to use Elasticsearch, comment out opensearch image above and
   ## uncomment this block. Do the same in the composer.healthcheck.yaml file.
   # Additionally, if you are performing the manual setup, you will need to
   # update the bin/setup command to use the $ES_HOST variable as the value for
   # the --elasticsearch-host argument passed to bin/magento setup:install.
-  elasticsearch:
-   image: markoshust/magento-elasticsearch:7.17-0
-   ports:
-     - "9201:9201"
-     - "9301:9301"
-   env_file: env/elasticsearch.env
-   environment:
-     - "discovery.type=single-node"
-     ## Avoid test failures due to small disks
-     ## More info at https://github.com/markshust/docker-magento/issues/488
-     - "cluster.routing.allocation.disk.threshold_enabled=false"
-     - "index.blocks.read_only_allow_delete"
+  #elasticsearch:
+  #  image: markoshust/magento-elasticsearch:7.17-0
+  #  ports:
+  #    - "9200:9200"
+  #    - "9300:9300"
+  #  env_file: env/elasticsearch.env
+  #  environment:
+  #    - "discovery.type=single-node"
+  #    ## Avoid test failures due to small disks
+  #    ## More info at https://github.com/markshust/docker-magento/issues/488
+  #    - "cluster.routing.allocation.disk.threshold_enabled=false"
+  #    - "index.blocks.read_only_allow_delete"
 
   rabbitmq:
     image: markoshust/magento-rabbitmq:3.11-0
     ports:
-      - "16672:16672"
-      - "5772:5772"
+      - "15673:15672"
+      - "5673:5672"
     volumes:
       - rabbitmqdata:/var/lib/rabbitmq
     env_file: env/rabbitmq.env

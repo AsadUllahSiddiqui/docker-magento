@@ -3,7 +3,7 @@ version: "3"
 services:
   app:
     healthcheck:
-      test: 'curl --fail 127.0.0.1:8000'
+      test: 'curl --fail 127.0.0.1:80'
     depends_on:
       phpfpm:
         condition: service_started
