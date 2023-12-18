@@ -52,7 +52,7 @@ services:
   redis:
     image: redis:7.0-alpine
     ports:
-      - "7379:7379"
+      - "7379:6379"
 
   # opensearch:
   #   image: markoshust/magento-opensearch:2.5-0
