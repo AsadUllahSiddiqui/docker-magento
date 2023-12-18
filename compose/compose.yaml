@@ -16,7 +16,7 @@ services:
   app:
     image: markoshust/magento-nginx:1.18-8
     ports:
-      - "80:8000"
+      - "81:8100"
       - "443:8443"
     volumes: &appvolumes
       - ~/.composer:/var/www/.composer:cached
@@ -44,7 +44,7 @@ services:
       --optimizer_use_condition_selectivity=1
       --optimizer_switch="rowid_filter=off"
     ports:
-      - "3306:3306"
+      - "3307:3307"
     env_file: env/db.env
     volumes:
       - dbdata:/var/lib/mysql
@@ -52,13 +52,13 @@ services:
   redis:
     image: redis:7.0-alpine
     ports:
-      - "6379:6379"
+      - "7379:7379"
 
   opensearch:
     image: markoshust/magento-opensearch:2.5-0
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "9201:9201"
+      - "9301:9301"
     env_file: env/opensearch.env
     environment:
       - "discovery.type=single-node"
@@ -88,8 +88,8 @@ services:
   rabbitmq:
     image: markoshust/magento-rabbitmq:3.11-0
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "16672:16672"
+      - "5772:5772"
     volumes:
       - rabbitmqdata:/var/lib/rabbitmq
     env_file: env/rabbitmq.env
@@ -98,14 +98,14 @@ services:
     image: sj26/mailcatcher
     ports:
       - "1080:1080"
-  
+
   ## Cloudflare tunnel support, uncomment to enable
   #tunnel:
   #  container_name: cloudflared-tunnel
   #  image: cloudflare/cloudflared:latest
   #  command: tunnel run
   #  env_file: env/cloudflare.env
-  
+
   ## Blackfire support, uncomment to enable
   #blackfire:
   #  image: blackfire/blackfire:2
